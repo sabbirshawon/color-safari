@@ -102,7 +102,7 @@ const ColorMatchGame = () => {
   ];
 
   // Replace your current sound useEffect with this:
-useEffect(() => {
+  useEffect(() => {
     const playSound = (type) => {
       if (!soundEnabled) return;
       
@@ -119,11 +119,22 @@ useEffect(() => {
           oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5
           oscillator.frequency.setValueAtTime(880, audioContext.currentTime + 0.1); // A5
           gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        } else {
+        } else if (type === 'wrong') {
           // Lower sound for wrong answer
           oscillator.frequency.setValueAtTime(349.23, audioContext.currentTime); // F4
           oscillator.frequency.setValueAtTime(293.66, audioContext.currentTime + 0.1); // D4
           gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        } else if (type === 'celebration') {
+          // Special celebratory sound sequence
+          const duration = 0.1;
+          oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5
+          oscillator.frequency.setValueAtTime(739.99, audioContext.currentTime + duration); // F#5
+          oscillator.frequency.setValueAtTime(880, audioContext.currentTime + duration * 2); // A5
+          oscillator.frequency.setValueAtTime(1046.50, audioContext.currentTime + duration * 3); // C6
+          oscillator.frequency.setValueAtTime(1318.51, audioContext.currentTime + duration * 4); // E6
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + duration * 5);
+          return;
         }
         
         oscillator.start(audioContext.currentTime);
@@ -204,8 +215,15 @@ useEffect(() => {
           if (prev <= 1) {
             setGameOver(true);
             setGameStarted(false);
-            setHighScore(current => Math.max(current, score));
-            window.playGameSound('correct');
+            setHighScore(current => {
+              // Play celebration sound if score is good (e.g., more than 10)
+              if (score > 10) {
+                window.playGameSound('celebration');
+              } else {
+                window.playGameSound('correct');
+              }
+              return Math.max(current, score);
+            });
             return 0;
           }
           return prev - 1;
@@ -251,21 +269,34 @@ useEffect(() => {
 
               {feedback && (
                 <Alert 
-                  className={`text-2xl font-bold ${
-                    feedback.type === 'success' ? 'bg-green-100' : 'bg-red-100'
-                  } animate-bounce`}
+                    className={`text-xl sm:text-2xl font-bold 
+                    ${feedback.type === 'success' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    } 
+                    animate-bounce shadow-lg border-2 
+                    ${feedback.type === 'success' ? 'border-green-500' : 'border-red-500'}`}
                 >
-                  {feedback.message}
+                    {feedback.message}
                 </Alert>
               )}
 
                 <div className="mb-4 sm:mb-8">
-                    <span className="text-2xl sm:text-4xl font-bold block mb-2 sm:mb-4">
-                        Find this color! {targetColor.emoji}
-                    </span>
+                    <div className="mb-4 sm:mb-8 bg-white/80 rounded-lg p-2">
+                        <span className="text-2xl sm:text-4xl font-bold block mb-2 sm:mb-4 text-gray-800">
+                            Find this color! {targetColor.emoji}
+                        </span>
+                    </div>
                     <span 
                         className="text-3xl sm:text-5xl font-bold block"
-                        style={{ color: targetColor.value }}
+                        style={{ 
+                            color: targetColor.value,
+                            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',  // Increased shadow
+                            WebkitTextStroke: '1px black',  // Add outline for better visibility
+                            padding: '10px',
+                            backgroundColor: 'rgba(255,255,255,0.1)',  // Slight background for better contrast
+                            borderRadius: '8px'
+                          }}
                     >
                         {targetColor.name}
                     </span>
