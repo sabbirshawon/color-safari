@@ -216,38 +216,38 @@ useEffect(() => {
   }, [gameStarted, gameOver, score]);
 
   return (
-    <Card className="w-full max-w-2xl mx-auto p-6 bg-gradient-to-b from-blue-50 to-purple-50">
+    <Card className="w-full min-h-screen sm:min-h-0 sm:max-w-2xl mx-auto p-3 sm:p-6 bg-gradient-to-b from-blue-50 to-purple-50">
       <CardContent>
-        <div className="text-center space-y-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold mb-4 text-purple-600">Color Match!</h1>
-            <Button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="rounded-full p-2"
-              variant="ghost"
-            >
-              {soundEnabled ? <Volume2 size={24} /> : <VolumeX size={24} />}
-            </Button>
-          </div>
+        <div className="text-center space-y-4 sm:space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-2xl sm:text-4xl font-bold mb-2 sm:mb-4 text-purple-600">Color Match!</h1>
+                <Button
+                    onClick={() => setSoundEnabled(!soundEnabled)}
+                    className="rounded-full p-1 sm:p-2"
+                    variant="ghost"
+                >
+                    {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+                </Button>
+            </div>
 
           {!gameStarted && !gameOver && (
-            <div className="space-y-6">
-              <p className="text-2xl text-gray-700">Match the colors and win stars! ⭐</p>
-              <Button 
-                onClick={startGame}
-                className="text-2xl p-6 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transform hover:scale-105 transition-transform"
-              >
-                Let's Play! 🎮
-              </Button>
+            <div className="space-y-4 sm:space-y-6">
+                <p className="text-xl sm:text-2xl text-gray-700">Match the colors and win stars! ⭐</p>
+                    <Button 
+                    onClick={startGame}
+                    className="text-xl sm:text-2xl p-4 sm:p-6 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transform hover:scale-105 transition-transform"
+                    >
+                    Let's Play! 🎮
+                    </Button>
             </div>
           )}
 
           {gameStarted && (
             <div className="space-y-6">
-              <div className="flex justify-between text-2xl font-bold">
-                <span>⭐ {score}</span>
-                <span>⏰ {timeLeft}s</span>
-              </div>
+                <div className="flex justify-between text-xl sm:text-2xl font-bold">
+                    <span>⭐ {score}</span>
+                    <span>⏰ {timeLeft}s</span>
+                </div>
 
               {feedback && (
                 <Alert 
@@ -259,54 +259,54 @@ useEffect(() => {
                 </Alert>
               )}
 
-              <div className="mb-8">
-                <span className="text-4xl font-bold block mb-4">
-                  Find this color! {targetColor.emoji}
-                </span>
-                <span 
-                  className="text-5xl font-bold block"
-                  style={{ color: targetColor.value }}
-                >
-                  {targetColor.name}
-                </span>
-              </div>
+                <div className="mb-4 sm:mb-8">
+                    <span className="text-2xl sm:text-4xl font-bold block mb-2 sm:mb-4">
+                        Find this color! {targetColor.emoji}
+                    </span>
+                    <span 
+                        className="text-3xl sm:text-5xl font-bold block"
+                        style={{ color: targetColor.value }}
+                    >
+                        {targetColor.name}
+                    </span>
+                </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6">
                 {options.map((color, index) => (
-                  <Button
+                    <Button
                     key={index}
                     onClick={() => handleColorClick(color)}
-                    className={`h-32 text-2xl font-bold rounded-xl transform transition-all duration-200 ${
-                      selectedButton === color.name ? 'scale-95' : 'hover:scale-105'
+                    className={`h-24 sm:h-32 text-xl sm:text-2xl font-bold rounded-xl transform transition-all duration-200 ${
+                        selectedButton === color.name ? 'scale-95' : 'hover:scale-105'
                     } ${isAnimating && selectedButton === color.name ? 'animate-bounce' : ''}`}
                     style={{ 
-                      backgroundColor: color.value,
-                      color: 'white',
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                        background: color.value,
+                        color: 'white',
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                     }}
-                  >
+                    >
                     {color.emoji}
-                  </Button>
+                    </Button>
                 ))}
-              </div>
+                </div>
             </div>
           )}
 
           {gameOver && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-purple-600">Game Over!</h2>
-              <div className="space-y-4">
-                <p className="text-2xl">You got {score} stars! ⭐</p>
+            <div className="space-y-4 sm:space-y-6">
+                <h2 className="text-2xl sm:text-3xl font-bold text-purple-600">Game Over!</h2>
+                <div className="space-y-2 sm:space-y-4">
+                <p className="text-xl sm:text-2xl">You got {score} stars! ⭐</p>
                 {score > highScore && (
-                  <p className="text-2xl text-purple-600">New High Score! 🎉</p>
+                    <p className="text-xl sm:text-2xl text-purple-600">New High Score! 🎉</p>
                 )}
-              </div>
-              <Button 
+                </div>
+                <Button 
                 onClick={startGame}
-                className="text-2xl p-6 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transform hover:scale-105 transition-transform"
-              >
+                className="text-xl sm:text-2xl p-4 sm:p-6 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white transform hover:scale-105 transition-transform"
+                >
                 Play Again! 🎮
-              </Button>
+                </Button>
             </div>
           )}
         </div>
