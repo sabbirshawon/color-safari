@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Alert } from '@/components/ui/alert';
+import { Card, CardContent } from './ui/Card';
+import { Button } from './ui/Button';
+import { Alert } from './ui/Alert';      
 import { Star, Music, Volume2, VolumeX } from 'lucide-react';
 
 const ColorMatchGame = () => {
